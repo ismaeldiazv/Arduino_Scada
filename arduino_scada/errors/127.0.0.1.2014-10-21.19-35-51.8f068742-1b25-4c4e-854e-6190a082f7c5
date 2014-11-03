@@ -1,0 +1,21 @@
+(dp1
+S'output'
+p2
+S"<type 'exceptions.NameError'> global name 'puerto_Serie' is not defined"
+p3
+sS'layer'
+p4
+S'/home/ismael/Escritorio/web2py/applications/arduino_scada/controllers/default.py'
+p5
+sS'code'
+p6
+S'# -*- coding: utf-8 -*-\n# this file is released under public domain and you can use without limitations\n\n#########################################################################\n## This is a sample controller\n## - index is the default action of any application\n## - user is required for authentication and authorization\n## - download is for downloading files uploaded in the db (does streaming)\n## - api is an example of Hypermedia API support and access control\n#########################################################################\nimport serial\nimport time\n\ndef index():\n    \n    response.flash = T("Welcome to web2py!")\n    return dict(message=T(\'Hello World\'))\n\n\n   \ndef recibe_datos():\n\t\n\tpuerto_Serie2=serial.Serial(\'/dev/ttyACM0\', 115200)   # En windows COM34\n\tpuerto_Serie2.close()\n\tpuerto_Serie2.open()\n\n\tvalor=int(request.vars.Valor)\n\t\n\tif (valor==1):\n\t\tcadena=\'a\'\n\n\tif (valor==0):\n\t\tcadena=\'b\'\n\t\n\t## ENCENDER (a), Y APAGAR (b) \n\tpuerto_Serie.write(cadena)   # Mandamos por puerto serie lo le\xc3\xaddo desde el teclado\n\t\n\ttime.sleep(0.1)   # Peque\xc3\xb1o tiempo de espera para esperar\n\n\t\ndef recibe_datos2():\n\t\n\tdatos=[]\n  \n\tdatos=puerto_Serie.readline()   # Imprima lo que haya en el buffer de recepcion, lo que manda arduino\n\t\n\tif len(datos)>5:\n\t\tdato_nivel=datos[0:2]\n\t\tdato_puerta=datos[3]\n\telse:\n\t\tdato_nivel=datos[0]\n\t\tdato_puerta=datos[2]\n\n\tdic = {"nivel":dato_nivel , "puerta":dato_puerta}\n\n\treturn dic\n\t\n\ttime.sleep(0.1)   # Peque\xc3\xb1o tiempo de espera para esperar\n\n\t\ndef user():\n    """\n    exposes:\n    http://..../[app]/default/user/login\n    http://..../[app]/default/user/logout\n    http://..../[app]/default/user/register\n    http://..../[app]/default/user/profile\n    http://..../[app]/default/user/retrieve_password\n    http://..../[app]/default/user/change_password\n    http://..../[app]/default/user/manage_users (requires membership in\n    use @auth.requires_login()\n        @auth.requires_membership(\'group name\')\n        @auth.requires_permission(\'read\',\'table name\',record_id)\n    to decorate functions that need access control\n    """\n    return dict(form=auth())\n\n\n@cache.action()\ndef download():\n    """\n    allows downloading of uploaded files\n    http://..../[app]/default/download/[filename]\n    """\n    return response.download(request, db)\n\n\ndef call():\n    """\n    exposes services. for example:\n    http://..../[app]/default/call/jsonrpc\n    decorate with @services.jsonrpc the functions to expose\n    supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv\n    """\n    return service()\n\n\n@auth.requires_login() \ndef api():\n    """\n    this is example of API with access control\n    WEB2PY provides Hypermedia API (Collection+JSON) Experimental\n    """\n    from gluon.contrib.hypermedia import Collection\n    rules = {\n        \'<tablename>\': {\'GET\':{},\'POST\':{},\'PUT\':{},\'DELETE\':{}},\n        }\n    return Collection(db).process(request,response,rules)\n\nresponse._vars=response._caller(recibe_datos)\n'
+p7
+sS'snapshot'
+p8
+(dp9
+sS'traceback'
+p10
+S'Traceback (most recent call last):\n  File "/home/ismael/Escritorio/web2py/gluon/restricted.py", line 224, in restricted\n    exec ccode in environment\n  File "/home/ismael/Escritorio/web2py/applications/arduino_scada/controllers/default.py", line 110, in <module>\n  File "/home/ismael/Escritorio/web2py/gluon/globals.py", line 392, in <lambda>\n    self._caller = lambda f: f()\n  File "/home/ismael/Escritorio/web2py/applications/arduino_scada/controllers/default.py", line 36, in recibe_datos\n    puerto_Serie.write(cadena)   # Mandamos por puerto serie lo le\xc3\xaddo desde el teclado\nNameError: global name \'puerto_Serie\' is not defined\n'
+p11
+s.
