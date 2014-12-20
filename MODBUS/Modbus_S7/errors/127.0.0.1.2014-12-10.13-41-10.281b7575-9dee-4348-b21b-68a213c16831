@@ -1,0 +1,21 @@
+(dp1
+S'output'
+p2
+S"<class 'socket.timeout'> timed out"
+p3
+sS'layer'
+p4
+S'/home/ismael/Escritorio/web2py/applications/Modbus_S7/controllers/default.py'
+p5
+sS'code'
+p6
+S'# -*- coding: utf-8 -*-\n# this file is released under public domain and you can use without limitations\n\n#########################################################################\n## This is a sample controller\n## - index is the default action of any application\n## - user is required for authentication and authorization\n## - download is for downloading files uploaded in the db (does streaming)\n## - api is an example of Hypermedia API support and access control\n#########################################################################\nimport modbus_tk\nimport modbus_tk.defines as cst\nimport modbus_tk.modbus_tcp as modbus_tcp\n\n\ndef index():\n    """\n    example action using the internationalization operator T and flash\n    rendered by views/default/index.html or views/generic.html\n\n    if you need a simple wiki simply replace the two lines below with:\n    return auth.wiki()\n    """\n    response.flash = T("Welcome to web2py!")\n    return dict(message=T(\'Hello World\'))\n      \ndef IN_PLC():\n\t\n\t\n\tmaster = modbus_tcp.TcpMaster(host="192.168.1.10",port=5000)  # Para ser cliente de otro equipo ponemos lo siguiente: host="IP DEL ESCLAVO(SERVIDOR)"\n\t\t\n\tmaster.execute(1, cst.WRITE_SINGLE_REGISTER, 5, output_value=1)\n\t\t\n\tresultado_IN=master.execute(1, cst.READ_HOLDING_REGISTERS, 0, 8) # (ID,CODIGO,INICIO,NUMERO A PARTIR DE INICIO)\n\t\t\t\n\tdic = {"I0":resultado_IN[0],"I1":resultado_IN[1],"I2":resultado_IN[2],"I3":resultado_IN[3],"I4":resultado_IN[4],"I5":resultado_IN[5],"I6":resultado_IN[6],"I7":resultado_IN[7]}\n\t\t\t\t\t\t\t\n\treturn dic\n\t\ndef OUT_PLC():\n\t\t\n\t#valorQ0=request.vars.Q0\n\t#valorQ0=int(valorQ0)\n\t\t\n\tOUT=[1,1,1,1,1,1,1,1]\n\t\n\tdic2 = {"Q0":OUT[0],"Q1":OUT[1],"Q2":OUT[2],"Q3":OUT[3],"Q4":OUT[4],"Q5":OUT[5],"Q6":OUT[6],"Q7":OUT[7]}\n\t\t\n\treturn dic2\n\t\ndef user():\n    """\n    exposes:\n    http://..../[app]/default/user/login\n    http://..../[app]/default/user/logout\n    http://..../[app]/default/user/register\n    http://..../[app]/default/user/profile\n    http://..../[app]/default/user/retrieve_password\n    http://..../[app]/default/user/change_password\n    http://..../[app]/default/user/manage_users (requires membership in\n    use @auth.requires_login()\n        @auth.requires_membership(\'group name\')\n        @auth.requires_permission(\'read\',\'table name\',record_id)\n    to decorate functions that need access control\n    """\n    return dict(form=auth())\n\n@cache.action()\ndef download():\n    """\n    allows downloading of uploaded files\n    http://..../[app]/default/download/[filename]\n    """\n    return response.download(request, db)\n\ndef call():\n    """\n    exposes services. for example:\n    http://..../[app]/default/call/jsonrpc\n    decorate with @services.jsonrpc the functions to expose\n    supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv\n    """\n    return service()\n\n@auth.requires_login() \ndef api():\n    """\n    this is example of API with access control\n    WEB2PY provides Hypermedia API (Collection+JSON) Experimental\n    """\n    from gluon.contrib.hypermedia import Collection\n    rules = {\n        \'<tablename>\': {\'GET\':{},\'POST\':{},\'PUT\':{},\'DELETE\':{}},\n        }\n    return Collection(db).process(request,response,rules)\n\nresponse._vars=response._caller(IN_PLC)\n'
+p7
+sS'snapshot'
+p8
+(dp9
+sS'traceback'
+p10
+S'Traceback (most recent call last):\n  File "/home/ismael/Escritorio/web2py/gluon/restricted.py", line 224, in restricted\n    exec ccode in environment\n  File "/home/ismael/Escritorio/web2py/applications/Modbus_S7/controllers/default.py", line 97, in <module>\n  File "/home/ismael/Escritorio/web2py/gluon/globals.py", line 392, in <lambda>\n    self._caller = lambda f: f()\n  File "/home/ismael/Escritorio/web2py/applications/Modbus_S7/controllers/default.py", line 32, in IN_PLC\n    master.execute(1, cst.WRITE_SINGLE_REGISTER, 5, output_value=1)\n  File "modbus_tk/utils.py", line 26, in new\n    raise excpt\ntimeout: timed out\n'
+p11
+s.

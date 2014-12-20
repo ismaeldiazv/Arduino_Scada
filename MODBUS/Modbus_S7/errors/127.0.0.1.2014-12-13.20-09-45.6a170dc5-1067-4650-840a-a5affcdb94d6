@@ -1,0 +1,21 @@
+(dp1
+S'output'
+p2
+S"<class 'socket.error'> [Errno 111] Connection refused"
+p3
+sS'layer'
+p4
+S'/home/ismael/Escritorio/web2py/applications/Modbus_S7/controllers/default.py'
+p5
+sS'code'
+p6
+S'# -*- coding: utf-8 -*-\n\n\n# Importamos las librerias de modbus\nimport modbus_tk\nimport modbus_tk.defines as cst\nimport modbus_tk.modbus_tcp as modbus_tcp\n\ndef index():\n    \n    response.flash = T("Welcome to web2py!")\n    return dict(message=T(\'Hello World\'))\n      \n# Funcion de lectura de PLC\ndef IN_PLC():\n\t\n\t# LECTURA DE ENTRADAS         host="192.168.1.10",\n\tmaster = modbus_tcp.TcpMaster(port=5000)  # Conexion modbus tcp con la ip del esclavo y puerto del esclavo\n\t\n\tresultado_IN=master.execute(1,cst.READ_HOLDING_REGISTERS,0,8)  # Resultado_IN, recoge el valor de la lectura de los registros del 0 al 8 \n\t\n\tdic = {"I0":resultado_IN[0],"I1":resultado_IN[1],"I2":resultado_IN[2],"I3":resultado_IN[3],"I4":resultado_IN[4],"I5":resultado_IN[5],"I6":resultado_IN[6],"I7":resultado_IN[7]}\n\n\treturn dic\n\t\n\t\n# Funcion de lectura de salidas de PLC\ndef OUT_PLC():\n\t\n\t# LECTURA DE SALIDAS          host="192.168.1.10",\n\tmaster = modbus_tcp.TcpMaster(port=5000)  # Conexion modbus tcp con la ip del esclavo y puerto del esclavo\n\n\tresultado_OUT=master.execute(1, cst.READ_HOLDING_REGISTERS, 9, 8)  \n\n\tdic2 = {"Q0":resultado_OUT[0],"Q1":resultado_OUT[1],"Q2":resultado_OUT[2],"Q3":resultado_OUT[3],"Q4":resultado_OUT[4],"Q5":resultado_OUT[5],"Q6":resultado_OUT[6],"Q7":resultado_OUT[7]}\n\t\n\treturn dic2\n\n\n# Funcion de escritura de salidas de PLC\t\ndef Escritura_OUT():\n    \n\t# ESCRITURA DE SALIDAS        host="192.168.1.10",\n\tmaster = modbus_tcp.TcpMaster(port=5000) \n\t\n\tnumero_OUT=int(request.vars.N_OUT)\n\t\n\tif numero_OUT==0:\n\t    \n\t    valor_OUT0=int(request.vars.Q0)\n\t    \n\t    master.execute(1, cst.WRITE_SINGLE_REGISTER, 17, output_value=valor_OUT0)\n\t\n\t\ndef user():\n    """\n    exposes:\n    http://..../[app]/default/user/login\n    http://..../[app]/default/user/logout\n    http://..../[app]/default/user/register\n    http://..../[app]/default/user/profile\n    http://..../[app]/default/user/retrieve_password\n    http://..../[app]/default/user/change_password\n    http://..../[app]/default/user/manage_users (requires membership in\n    use @auth.requires_login()\n        @auth.requires_membership(\'group name\')\n        @auth.requires_permission(\'read\',\'table name\',record_id)\n    to decorate functions that need access control\n    """\n    return dict(form=auth())\n\n@cache.action()\ndef download():\n    """\n    allows downloading of uploaded files\n    http://..../[app]/default/download/[filename]\n    """\n    return response.download(request, db)\n\ndef call():\n    """\n    exposes services. for example:\n    http://..../[app]/default/call/jsonrpc\n    decorate with @services.jsonrpc the functions to expose\n    supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv\n    """\n    return service()\n\n@auth.requires_login() \ndef api():\n    """\n    this is example of API with access control\n    WEB2PY provides Hypermedia API (Collection+JSON) Experimental\n    """\n    from gluon.contrib.hypermedia import Collection\n    rules = {\n        \'<tablename>\': {\'GET\':{},\'POST\':{},\'PUT\':{},\'DELETE\':{}},\n        }\n    return Collection(db).process(request,response,rules)\n\n\nresponse._vars=response._caller(OUT_PLC)\n'
+p7
+sS'snapshot'
+p8
+(dp9
+sS'traceback'
+p10
+S'Traceback (most recent call last):\n  File "/home/ismael/Escritorio/web2py/gluon/restricted.py", line 224, in restricted\n    exec ccode in environment\n  File "/home/ismael/Escritorio/web2py/applications/Modbus_S7/controllers/default.py", line 102, in <module>\n  File "/home/ismael/Escritorio/web2py/gluon/globals.py", line 392, in <lambda>\n    self._caller = lambda f: f()\n  File "/home/ismael/Escritorio/web2py/applications/Modbus_S7/controllers/default.py", line 33, in OUT_PLC\n    resultado_OUT=master.execute(1, cst.READ_HOLDING_REGISTERS, 9, 8)\n  File "modbus_tk/utils.py", line 26, in new\n    raise excpt\nerror: [Errno 111] Connection refused\n'
+p11
+s.
